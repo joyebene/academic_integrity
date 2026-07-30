@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}My Courses{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+
+    <div class="flex justify-between items-center mb-8">
+
+        <div>
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                My Courses
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Manage all courses assigned to you.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('lecturers.create_course') }}"
+            class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg">
+
+            <i class="fas fa-plus mr-2"></i>
+
+            Create Course
+
+        </a>
+
+    </div>
+
+
+    {% if courses %}
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+        <table class="w-full">
+
+            <thead class="bg-gray-50">
+
+                <tr>
+
+                    <th class="px-6 py-4 text-left">Course Code</th>
+
+                    <th class="px-6 py-4 text-left">Course Title</th>
+
+                    <th class="px-6 py-4 text-left">Assignments</th>
+
+                    <th class="px-6 py-4 text-left">Created</th>
+
+                    <th class="px-6 py-4 text-right">Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody class="divide-y">
+
+                {% for course in courses %}
+
+                <tr class="hover:bg-gray-50">
+
+                    <td class="px-6 py-4 font-semibold text-blue-600">
+                        {{ course.code }}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {{ course.title }}
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+
+                            {{ course.assignments|length }}
+
+                        </span>
+
+                    </td>
+
+                    <td class="px-6 py-4 text-gray-500">
+
+                        {{ course.created_at.strftime('%d %b %Y') }}
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        <div class="flex justify-end gap-3">
+
+                            <a href="{{ url_for('lecturers.edit_course', id=course.id) }}"
+                                class="text-yellow-600 hover:text-yellow-700">
+
+                                <i class="fas fa-edit"></i>
+
+                            </a>
+
+                            <form method="POST" action="{{ url_for('lecturers.delete_course', id=course.id) }}"
+                                onsubmit="return confirm('Delete this course?');">
+
+                                {{ delete_form.hidden_tag() }}
+
+                                <button class="text-red-600 hover:text-red-700">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="bg-white rounded-xl shadow p-16 text-center">
+
+        <i class="fas fa-book text-6xl text-gray-300 mb-6"></i>
+
+        <h2 class="text-2xl font-bold text-gray-700">
+
+            No Courses Yet
+
+        </h2>
+
+        <p class="text-gray-500 mt-3">
+
+            Create your first course to begin assigning work.
+
+        </p>
+
+        <a href="{{ url_for('lecturers.create_course') }}"
+            class="inline-block mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
+
+            <i class="fas fa-plus mr-2"></i>
+
+            Create Course
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

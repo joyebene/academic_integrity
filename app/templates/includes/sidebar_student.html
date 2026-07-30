@@ -1,0 +1,125 @@
+<!-- templates/includes/sidebar_student.html -->
+
+
+{% set current = request.endpoint %}
+
+
+<aside class="w-64 bg-white shadow min-h-screen relative overflow-y-auto h-screen">
+
+
+    <!-- Mobile Close Button -->
+
+    <div class="md:hidden flex justify-end p-4">
+
+        <button onclick="closeSidebar()" class="text-gray-500 hover:text-red-600 text-xl">
+
+            <i class="fas fa-times"></i>
+
+        </button>
+
+    </div>
+
+
+
+    <div class="p-6 space-y-2">
+
+
+
+        <!-- Dashboard -->
+
+        <a href="{{ url_for('students.dashboard') }}" class="sidebar-link
+        {% if current == 'students.dashboard' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-home"></i>
+
+            Dashboard
+
+
+        </a>
+
+
+
+
+        <!-- Assignments -->
+
+        <a href="{{ url_for('students.assignments') }}" class="sidebar-link
+        {% if current == 'students.assignments' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-book"></i>
+
+            Assignments
+
+
+        </a>
+
+
+
+        <!-- Submissions -->
+
+        <a href="{{ url_for('students.my_submissions') }}" class="sidebar-link
+        {% if current == 'students.my_submissions' %}
+            active
+        {% endif %}">
+
+            <i class="fas fa-upload"></i>
+
+            My Submissions
+        </a>
+
+
+        <!-- Notifications -->
+
+        <a href="{{ url_for('notifications.index') }}" class="sidebar-link
+        {% if current == 'notifications.index' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-bell"></i>
+
+            Notifications
+
+
+        </a>
+
+        <a href="{{ url_for('reports.index') }}" class="sidebar-link
+         {% if current == 'reports.index' %}
+            active
+        {% endif %}">
+
+            <i class="fas fa-file-alt"></i>
+
+            My Reports
+
+        </a>
+
+
+
+        <!-- Settings -->
+
+        <a href="{{ url_for('settings.index') }}" class="sidebar-link
+        {% if current == 'settings.index' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-cog"></i>
+
+            Settings
+
+
+        </a>
+
+
+
+    </div>
+
+
+
+</aside>

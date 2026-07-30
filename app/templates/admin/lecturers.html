@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+All Lecturers
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="bg-white rounded-xl shadow p-6">
+
+
+<div class="flex justify-between items-center mb-6">
+
+
+<h1 class="text-2xl font-bold">
+All Lecturers
+</h1>
+
+
+<span class="bg-green-100 text-green-700 px-4 py-2 rounded">
+
+{{ lecturers|length }} Lecturers
+
+</span>
+
+
+</div>
+
+
+
+
+<div class="overflow-x-auto">
+
+
+<table class="w-full">
+
+
+<thead class="bg-gray-100">
+
+
+<tr>
+
+
+<th class="p-3 text-left">
+Name
+</th>
+
+
+<th class="p-3 text-left">
+Email
+</th>
+
+
+<th class="p-3 text-left">
+Staff ID
+</th>
+
+
+<th class="p-3 text-left">
+Specialization
+</th>
+
+
+<th class="p-3 text-left">
+Status
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for lecturer in lecturers %}
+
+
+<tr class="border-b hover:bg-gray-50">
+
+
+<td class="p-3">
+
+{{ lecturer.user.full_name }}
+
+</td>
+
+
+
+<td class="p-3">
+
+{{ lecturer.user.email }}
+
+</td>
+
+
+
+<td class="p-3">
+
+{{ lecturer.staff_id }}
+
+</td>
+
+
+
+<td class="p-3">
+
+{{ lecturer.specialization }}
+
+</td>
+
+
+
+<td class="p-3">
+
+
+{% if lecturer.user.is_active %}
+
+
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded">
+
+Active
+
+</span>
+
+
+{% else %}
+
+
+<span class="bg-red-100 text-red-700 px-3 py-1 rounded">
+
+Inactive
+
+</span>
+
+
+{% endif %}
+
+
+</td>
+
+
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
+
+{% endblock %}

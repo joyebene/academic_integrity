@@ -1,0 +1,161 @@
+<!-- templates/includes/sidebar_lecturer.html -->
+
+
+{% set current = request.endpoint %}
+
+
+
+<aside class="w-64 bg-white shadow min-h-screen relative overflow-y-auto h-screen">
+
+
+
+    <!-- Mobile Close Button -->
+
+    <div class="md:hidden flex justify-end p-4">
+
+        <button onclick="closeSidebar()" class="text-gray-500 hover:text-red-600 text-xl">
+
+            <i class="fas fa-times"></i>
+
+        </button>
+
+    </div>
+
+
+
+
+
+    <div class="p-6 space-y-2">
+
+
+
+
+
+
+        <!-- Dashboard -->
+
+        <a href="{{ url_for('lecturers.dashboard') }}" class="sidebar-link
+        {% if current == 'lecturers.dashboard' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-home"></i>
+
+            Dashboard
+
+
+        </a>
+
+        <!-- Courses Management -->
+
+        <a href="{{ url_for('lecturers.courses') }}"
+            class="sidebar-link {% if request.endpoint == 'lecturers.courses' %}active{% endif %}">
+            <i class="fas fa-book"></i>
+            Courses
+        </a>
+
+
+
+
+        <!-- Create Assignment -->
+
+        <a href="{{ url_for('lecturers.assignments') }}" class="sidebar-link
+        {% if current == 'lecturers.assignments' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-plus-circle"></i>
+
+            Assignment
+
+
+        </a>
+
+
+
+        <!-- Student Submissions -->
+
+        <a href="{{ url_for('lecturers.submissions') }}" class="sidebar-link
+        {% if current == 'lecturers.submissions' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-folder-open"></i>
+
+            Student Submissions
+
+
+        </a>
+
+
+
+        <!-- Flagged Submissions -->
+
+        <a href="{{ url_for('lecturers.flagged_submissions') }}" class="sidebar-link
+        {% if current == 'lecturers.flagged_submissions' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-flag"></i>
+
+            Flagged Submissions
+
+
+        </a>
+
+
+        <!-- Notifications -->
+
+        <a href="{{ url_for('notifications.index') }}" class="sidebar-link
+        {% if current == 'notifications.index' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-bell"></i>
+
+            Notifications
+
+
+        </a>
+
+
+
+        <!-- Reports -->
+
+        <a href="{{ url_for('reports.index') }}" class="sidebar-link
+         {% if current == 'reports.index' %}
+            active
+        {% endif %}">
+
+            <i class="fas fa-chart-pie"></i>
+
+            Reports
+
+        </a>
+
+
+
+        <!-- Settings -->
+
+        <a href="{{ url_for('settings.index') }}" class="sidebar-link
+        {% if current == 'settings.index' %}
+            active
+        {% endif %}">
+
+
+            <i class="fas fa-cog"></i>
+
+            Settings
+
+
+        </a>
+
+    </div>
+
+
+</aside>

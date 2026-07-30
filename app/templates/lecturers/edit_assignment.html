@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Assignment{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-yellow-500 to-orange-600 rounded-2xl p-6 text-white mb-8">
+
+        <div class="flex items-center justify-between">
+
+            <div>
+
+                <h1 class="text-3xl font-bold">
+                    Edit Assignment
+                </h1>
+
+                <p class="text-yellow-100 mt-2">
+                    Update assignment details before the deadline.
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('lecturers.assignments') }}"
+               class="bg-white text-orange-600 px-5 py-2 rounded-lg hover:bg-gray-100 transition">
+
+                Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <form method="POST">
+
+        {{ form.hidden_tag() }}
+
+        <div class="grid lg:grid-cols-3 gap-8">
+
+            <!-- LEFT -->
+
+            <div class="lg:col-span-2 space-y-6">
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="text-xl font-bold mb-6">
+                        Assignment Details
+                    </h2>
+
+                    <div class="mb-5">
+
+                        <label class="block font-medium mb-2">
+                            Assignment Title
+                        </label>
+
+                        {{ form.title(class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-orange-400") }}
+
+                    </div>
+
+                    <div>
+
+                        <label class="block font-medium mb-2">
+                            Description
+                        </label>
+
+                        {{ form.description(class="w-full border rounded-lg p-3 h-56 focus:ring-2 focus:ring-orange-400") }}
+
+                    </div>
+
+                </div>
+
+                <!-- Instructions -->
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="text-xl font-bold mb-5">
+                        Instructions
+                    </h2>
+
+                    <textarea
+                        name="instructions"
+                        rows="8"
+                        class="w-full border rounded-lg p-4"
+                        placeholder="Enter submission instructions here...">{% if assignment.instructions %}{{ assignment.instructions }}{% endif %}</textarea>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="space-y-6">
+
+                <!-- Due Date -->
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="font-bold mb-4">
+                        Due Date
+                    </h2>
+
+                    {{ form.due_date(class="w-full border rounded-lg p-3") }}
+
+                </div>
+
+                <!-- Status -->
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="font-bold mb-5">
+                        Assignment Status
+                    </h2>
+
+                    <label class="flex items-center">
+
+                        <input
+                            type="checkbox"
+                            name="is_active"
+                            {% if assignment.is_active %}checked{% endif %}
+                            class="mr-3">
+
+                        Active Assignment
+
+                    </label>
+
+                </div>
+
+                <!-- Detection Settings -->
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="font-bold mb-5">
+                        Detection
+                    </h2>
+
+                    <label class="flex items-center mb-4">
+
+                        <input
+                            type="checkbox"
+                            name="enable_ai"
+                            checked
+                            class="mr-3">
+
+                        Enable AI Detection
+
+                    </label>
+
+                    <label class="flex items-center">
+
+                        <input
+                            type="checkbox"
+                            name="enable_plagiarism"
+                            checked
+                            class="mr-3">
+
+                        Enable Plagiarism Detection
+
+                    </label>
+
+                </div>
+
+                <!-- Buttons -->
+
+                <div class="bg-white rounded-xl shadow-sm p-6 space-y-3">
+
+                    <button
+                        type="submit"
+                        class="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg font-semibold transition">
+
+                        <i class="fas fa-save mr-2"></i>
+
+                        Update Assignment
+
+                    </button>
+
+                    <a href="{{ url_for('lecturers.assignments') }}"
+                       class="block w-full text-center bg-gray-200 hover:bg-gray-300 py-3 rounded-lg transition">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

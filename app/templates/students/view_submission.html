@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+
+{% block title %}My Submission{% endblock %}
+
+{% block content %}
+
+<div class="space-y-8">
+
+    <!-- Header -->
+
+    <div class="bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-6 text-white">
+
+        <div class="flex justify-between items-center">
+
+            <div>
+
+                <h1 class="text-3xl font-bold">
+                    My Submission
+                </h1>
+
+                <p class="text-green-100 mt-2">
+                    View your assignment submission and integrity analysis.
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('students.my_submissions') }}"
+               class="bg-white text-green-700 px-5 py-2 rounded-lg font-semibold">
+
+                ← Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Assignment Information -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="text-xl font-bold mb-5">
+            Assignment Details
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+            <div>
+
+                <p class="text-gray-500">
+                    Assignment
+                </p>
+
+                <h3 class="font-semibold text-lg">
+                    {{ submission.assignment.title }}
+                </h3>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    Course
+                </p>
+
+                <h3 class="font-semibold">
+                    {{ submission.assignment.course.course_name }}
+                </h3>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    Submitted On
+                </p>
+
+                <h3 class="font-semibold">
+                    {{ submission.submitted_at.strftime("%d %B %Y %I:%M %p") }}
+                </h3>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">
+                    Status
+                </p>
+
+                {% if submission.status == "approved" %}
+
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                    Approved
+                </span>
+
+                {% elif submission.status == "flagged" %}
+
+                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full">
+                    Flagged
+                </span>
+
+                {% elif submission.status == "processing" %}
+
+                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
+                    Processing
+                </span>
+
+                {% elif submission.status == "completed" %}
+
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                    Completed
+                </span>
+
+                {% else %}
+
+                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
+                    {{ submission.status }}
+                </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Uploaded File -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <div class="flex justify-between items-center">
+
+            <div>
+
+                <h2 class="font-bold text-lg">
+                    Uploaded File
+                </h2>
+
+                <p class="text-gray-500 mt-1">
+                    {{ submission.original_filename }}
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('students.download_submission', id=submission.id) }}"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg">
+
+                <i class="fas fa-download mr-2"></i>
+
+                Download
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI Analysis -->
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <h2 class="font-bold text-lg mb-4">
+                Plagiarism Score
+            </h2>
+
+            <div class="w-full bg-gray-200 rounded-full h-4">
+
+                <div
+                    class="bg-red-500 h-4 rounded-full"
+                    style="width: {{ submission.analysis.plagiarism_score if submission.analysis else 0 }}%">
+                </div>
+
+            </div>
+
+            <p class="text-3xl font-bold text-red-600 mt-4">
+
+                {{ submission.analysis.plagiarism_score if submission.analysis else 0 }}%
+
+            </p>
+
+        </div>
+
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <h2 class="font-bold text-lg mb-4">
+                AI Generated Score
+            </h2>
+
+            <div class="w-full bg-gray-200 rounded-full h-4">
+
+                <div
+                    class="bg-purple-600 h-4 rounded-full"
+                    style="width: {{ submission.analysis.ai_generated_score if submission.analysis else 0 }}%">
+                </div>
+
+            </div>
+
+            <p class="text-3xl font-bold text-purple-600 mt-4">
+
+                {{ submission.analysis.ai_generated_score if submission.analysis else 0 }}%
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Student Comment -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="font-bold text-xl mb-4">
+            Your Comment
+        </h2>
+
+        <p>
+
+            {{ submission.comments or "No comment submitted." }}
+
+        </p>
+
+    </div>
+
+
+    <!-- Lecturer Feedback -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="font-bold text-xl mb-4">
+            Lecturer Feedback
+        </h2>
+
+        {% if submission.feedback %}
+
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+
+                {{ submission.feedback }}
+
+            </div>
+
+        {% else %}
+
+            <p class="text-gray-500">
+
+                No feedback from your lecturer yet.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Integrity Result -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="font-bold text-xl mb-4">
+
+            Integrity Assessment
+
+        </h2>
+
+        {% if submission.status == "approved" %}
+
+            <div class="bg-green-100 border border-green-300 rounded-lg p-5">
+
+                <h3 class="font-bold text-green-700">
+
+                    Submission Approved
+
+                </h3>
+
+                <p class="mt-2">
+
+                    Your lecturer has reviewed and approved this submission.
+
+                </p>
+
+            </div>
+
+        {% elif submission.status == "flagged" %}
+
+            <div class="bg-red-100 border border-red-300 rounded-lg p-5">
+
+                <h3 class="font-bold text-red-700">
+
+                    Submission Under Review
+
+                </h3>
+
+                <p class="mt-2">
+
+                    Your submission has been flagged and is currently under review by your lecturer.
+
+                </p>
+
+            </div>
+
+        {% else %}
+
+            <div class="bg-yellow-100 border border-yellow-300 rounded-lg p-5">
+
+                <h3 class="font-bold text-yellow-700">
+
+                    Awaiting Lecturer Review
+
+                </h3>
+
+                <p class="mt-2">
+
+                    Your submission has been analyzed and is awaiting lecturer review.
+
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

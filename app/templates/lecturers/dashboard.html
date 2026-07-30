@@ -1,0 +1,413 @@
+<!-- templates/lecturers/dashboard.html -->
+
+{% extends "base.html" %}
+
+{% block title %}Lecturer Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="space-y-8">
+
+    <!-- Header -->
+
+    <div class="bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-8 text-white">
+
+        <div class="flex justify-between items-center">
+
+            <div>
+
+                <h1 class="text-3xl font-bold">
+                    Welcome,
+                    {{ lecturer.user.full_name }}
+                </h1>
+
+                <p class="text-green-100 mt-2">
+                    Manage assignments, review student submissions and monitor academic integrity.
+                </p>
+
+            </div>
+
+            <div class="hidden md:block">
+
+                <i class="fas fa-user-graduate text-7xl text-green-200"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Statistics -->
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="text-gray-500">
+
+                        Assignments
+
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-green-700">
+
+                        {{ stats.assignments }}
+
+                    </h2>
+
+                </div>
+
+                <div class="bg-green-100 h-14 w-14 rounded-xl flex items-center justify-center">
+
+                    <i class="fas fa-book text-green-700 text-xl"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="text-gray-500">
+
+                        Total Submissions
+
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-blue-700">
+
+                        {{ stats.submissions }}
+
+                    </h2>
+
+                </div>
+
+                <div class="bg-blue-100 h-14 w-14 rounded-xl flex items-center justify-center">
+
+                    <i class="fas fa-file-upload text-blue-700 text-xl"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="text-gray-500">
+
+                        Processing
+
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-yellow-600">
+
+                        {{ stats.processing }}
+
+                    </h2>
+
+                </div>
+
+                <div class="bg-yellow-100 h-14 w-14 rounded-xl flex items-center justify-center">
+
+                    <i class="fas fa-spinner text-yellow-600 text-xl"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Quick Actions -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="text-xl font-bold mb-5">
+
+            Quick Actions
+
+        </h2>
+
+        <div class="grid md:grid-cols-4 gap-4">
+
+            <a href="{{ url_for('lecturers.create_assignment') }}"
+               class="bg-green-600 hover:bg-green-700 text-white rounded-xl p-5 text-center">
+
+                <i class="fas fa-plus-circle text-3xl mb-3"></i>
+
+                <p class="font-semibold">
+
+                    Create Assignment
+
+                </p>
+
+            </a>
+
+
+            <a href="{{ url_for('lecturers.assignments') }}"
+               class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl p-5 text-center">
+
+                <i class="fas fa-book text-3xl mb-3"></i>
+
+                <p class="font-semibold">
+
+                    View Assignments
+
+                </p>
+
+            </a>
+
+
+            <a href="{{ url_for('lecturers.submissions') }}"
+               class="bg-purple-600 hover:bg-purple-700 text-white rounded-xl p-5 text-center">
+
+                <i class="fas fa-folder-open text-3xl mb-3"></i>
+
+                <p class="font-semibold">
+
+                    Review Submissions
+
+                </p>
+
+            </a>
+
+
+            <a href="{{ url_for('reports.index') }}
+               class="bg-orange-500 hover:bg-orange-600 text-white rounded-xl p-5 text-center">
+
+                <i class="fas fa-chart-bar text-3xl mb-3"></i>
+
+                <p class="font-semibold">
+
+                    Reports
+
+                </p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Recent Submissions -->
+
+    <div class="bg-white rounded-xl shadow">
+
+        <div class="flex justify-between items-center p-6 border-b">
+
+            <h2 class="text-xl font-bold">
+
+                Recent Submissions
+
+            </h2>
+
+            <a href="{{ url_for('lecturers.submissions') }}"
+               class="text-blue-600 hover:underline">
+
+                View All
+
+            </a>
+
+        </div>
+
+
+        <div class="overflow-x-auto">
+
+            <table class="min-w-full">
+
+                <thead class="bg-gray-50">
+
+                    <tr>
+
+                        <th class="text-left px-6 py-4">
+
+                            Student
+
+                        </th>
+
+                        <th class="text-left px-6 py-4">
+
+                            Assignment
+
+                        </th>
+
+                        <th class="text-left px-6 py-4">
+
+                            Submitted
+
+                        </th>
+
+                        <th class="text-left px-6 py-4">
+
+                            Status
+
+                        </th>
+
+                        <th class="text-right px-6 py-4">
+
+                            Action
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for submission in submissions %}
+
+                    <tr class="border-t hover:bg-gray-50">
+
+                        <td class="px-6 py-4">
+
+                            {{ submission.student.user.full_name }}
+
+                        </td>
+
+                        <td class="px-6 py-4">
+
+                            {{ submission.assignment.title }}
+
+                        </td>
+
+                        <td class="px-6 py-4">
+
+                            {{ submission.submitted_at.strftime("%d %b %Y") }}
+
+                        </td>
+
+                        <td class="px-6 py-4">
+
+                            {% if submission.status == "processing" %}
+
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+
+                                    Processing
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+
+                                    {{ submission.status|title }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="px-6 py-4 text-right">
+
+                            <a href="{{ url_for('lecturers.view_submission', id=submission.id) }}"
+                               class="text-blue-600 hover:text-blue-800">
+
+                                <i class="fas fa-eye mr-2"></i>
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="5"
+                            class="text-center py-8 text-gray-500">
+
+                            No submissions available.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Notifications -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="text-xl font-bold mb-5">
+
+            Recent Notifications
+
+        </h2>
+
+        <div class="space-y-4">
+
+        {% for notification in notifications %}
+
+            <div class="border rounded-lg p-4">
+
+                <p class="font-medium">
+
+                    {{ notification.title }}
+
+                </p>
+
+                <p class="text-gray-600 text-sm mt-1">
+
+                    {{ notification.message }}
+
+                </p>
+
+            </div>
+
+        {% else %}
+
+            <p class="text-gray-500">
+
+                No notifications.
+
+            </p>
+
+        {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

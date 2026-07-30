@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Submission Details
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="bg-white rounded-xl shadow p-6">
+
+
+    <h1 class="text-2xl font-bold mb-6">
+        Submission Details
+    </h1>
+
+
+
+    <div class="space-y-4">
+
+
+        <p>
+            <strong>Student:</strong>
+            {{ submission.student.user.full_name }}
+        </p>
+
+
+
+        <p>
+            <strong>Assignment:</strong>
+            {{ submission.assignment.title }}
+        </p>
+
+
+
+        <p>
+            <strong>Status:</strong>
+
+            {{ submission.status }}
+
+        </p>
+
+
+
+        <p>
+            <strong>File:</strong>
+
+            <a class="text-blue-600" href="{{ url_for('admin.download_submission', id=submission.id) }}">
+                Download
+            </a>
+
+        </p>
+
+
+
+        {% if analysis %}
+
+        <hr>
+
+
+        <h2 class="text-xl font-bold">
+            AI Analysis
+        </h2>
+
+
+        <p>
+            Plagiarism Score:
+            {{ analysis.plagiarism_score }}%
+        </p>
+
+
+        <p>
+            AI Generated Score:
+            {{ analysis.ai_generated_score }}%
+        </p>
+
+
+        {% endif %}
+
+
+
+        {% if suspicious %}
+
+        <div class="bg-red-100 text-red-700 p-4 rounded">
+
+            <h3 class="font-bold">
+                Flagged Submission
+            </h3>
+
+            <p>
+                {{ suspicious.reason }}
+            </p>
+
+
+        </div>
+
+        {% endif %}
+
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

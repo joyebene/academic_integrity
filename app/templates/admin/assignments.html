@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}All Assignments{% endblock %}
+
+
+{% block content %}
+
+
+<div class="bg-white rounded-xl shadow p-6">
+
+
+<h1 class="text-2xl font-bold mb-6">
+    All Assignments
+</h1>
+
+
+<table class="w-full">
+
+
+<thead class="bg-gray-100">
+
+<tr>
+
+<th class="p-3 text-left">
+Title
+</th>
+
+
+<th class="p-3 text-left">
+Course
+</th>
+
+
+<th class="p-3 text-left">
+Deadline
+</th>
+
+
+<th class="p-3 text-left">
+Status
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for assignment in assignments %}
+
+
+<tr class="border-b">
+
+
+<td class="p-3">
+{{ assignment.title }}
+</td>
+
+
+
+<td class="p-3">
+
+{{ assignment.course.title }}
+
+</td>
+
+
+
+<td class="p-3">
+
+{{ assignment.deadline }}
+
+</td>
+
+
+
+<td class="p-3">
+
+
+{% if assignment.is_active %}
+
+<span class="px-3 py-1 bg-green-100 text-green-700 rounded">
+Active
+</span>
+
+
+{% else %}
+
+<span class="px-3 py-1 bg-red-100 text-red-700 rounded">
+Closed
+</span>
+
+{% endif %}
+
+
+</td>
+
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+{% endblock %}

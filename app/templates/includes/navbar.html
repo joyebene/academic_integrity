@@ -1,0 +1,125 @@
+<!-- templates/includes/navbar.html -->
+
+<nav class="gradient-bg shadow-lg p-2 md:p-3">
+    <div class="md:hidden px-4">
+
+<button onclick="toggleSidebar()"
+class="text-white text-2xl">
+
+<i class="fas fa-bars"></i>
+
+</button>
+
+</div>
+
+    <div class="px-4 h-16 flex justify-between items-center">
+
+        <!-- Logo -->
+
+        <div class="flex items-center gap-3">
+
+            <i class="fas fa-shield-alt text-yellow-400 text-2xl"></i>
+
+            <span class="text-white text-xl font-bold">
+                Academic Integrity System
+            </span>
+
+        </div>
+
+
+        {% if current_user.is_authenticated %}
+
+        <div class="flex items-center gap-6">
+
+
+            <!-- Notifications -->
+
+            <a href="{{ url_for('notifications.index') }}"
+               class="relative text-white hover:text-yellow-400">
+
+                <i class="fas fa-bell text-xl"></i>
+
+
+                {% if current_user.notifications %}
+
+                <span class="absolute -top-2 -right-2 
+                bg-red-500 text-white text-xs 
+                rounded-full h-5 w-5 
+                flex items-center justify-center">
+
+                    {{ current_user.notifications|length }}
+
+                </span>
+
+                {% endif %}
+
+            </a>
+
+
+
+            <!-- Profile -->
+
+
+            <div class="flex items-center gap-3">
+
+
+                <div class="h-10 w-10 rounded-full 
+                bg-yellow-400 text-black 
+                flex items-center justify-center 
+                font-bold">
+
+
+                    {{ current_user.first_name[0] }}
+
+                </div>
+
+
+                <div class="text-white">
+
+
+                    <p class="font-semibold">
+
+                        {{ current_user.full_name }}
+
+                    </p>
+
+
+                    <p class="text-xs text-gray-200">
+
+                        {{ current_user.role|title }}
+
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- Logout -->
+
+            <a href="{{ url_for('auth.logout') }}"
+               class="bg-red-500 hover:bg-red-600 
+               px-4 py-2 rounded-lg text-white">
+
+
+                <i class="fas fa-sign-out-alt mr-2"></i>
+
+                Logout
+
+
+            </a>
+
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</nav>

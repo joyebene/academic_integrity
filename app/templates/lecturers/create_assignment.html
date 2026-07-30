@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Create Assignment{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-6 text-white mb-8">
+
+        <div class="flex justify-between items-center">
+
+            <div>
+                <h1 class="text-3xl font-bold">
+                    Create Assignment
+                </h1>
+
+                <p class="text-green-100 mt-2">
+                    Publish a new assignment for students.
+                </p>
+            </div>
+
+            <a href="{{ url_for('lecturers.dashboard') }}"
+               class="bg-white text-green-700 px-5 py-2 rounded-lg hover:bg-gray-100 transition">
+                Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+    <form method="POST">
+
+        {{ form.hidden_tag() }}
+
+        <div class="grid lg:grid-cols-3 gap-8">
+
+            <!-- LEFT -->
+            <div class="lg:col-span-2 space-y-6">
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="text-xl font-bold mb-6">
+                        Assignment Details
+                    </h2>
+
+                    <!-- Title -->
+                    <div class="mb-5">
+
+                        <label class="block mb-2 font-medium">
+                            Assignment Title
+                        </label>
+
+                        {{ form.title(class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-green-500") }}
+
+                        {% for error in form.title.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+
+                        <label class="block mb-2 font-medium">
+                            Description
+                        </label>
+
+                        {{ form.description(class="w-full border rounded-lg p-3 h-48 focus:ring-2 focus:ring-green-500") }}
+
+                        {% for error in form.description.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <!-- Instructions -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="text-xl font-bold mb-5">
+                        Submission Instructions
+                    </h2>
+
+                    <textarea
+                        name="instructions"
+                        rows="8"
+                        class="w-full border rounded-lg p-4"
+                        placeholder="Example:
+
+• Upload PDF only.
+• Maximum 10 pages.
+• Cite every reference.
+• Individual work only.
+"></textarea>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="space-y-6">
+
+                <!-- Course -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="font-bold mb-5">
+                        Course
+                    </h2>
+
+                    {{ form.course_id(class="w-full border rounded-lg p-3") }}
+
+                    {% for error in form.course_id.errors %}
+                        <p class="text-red-500 text-sm mt-2">{{ error }}</p>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Due Date -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="font-bold mb-5">
+                        Due Date
+                    </h2>
+
+                    {{ form.due_date(class="w-full border rounded-lg p-3") }}
+
+                    {% for error in form.due_date.errors %}
+                        <p class="text-red-500 text-sm mt-2">{{ error }}</p>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Settings -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="font-bold mb-5">
+                        Settings
+                    </h2>
+
+                    <div class="space-y-4">
+
+                        <label class="flex items-center">
+                            <input type="checkbox"
+                                   name="allow_late"
+                                   class="mr-3">
+                            Allow Late Submission
+                        </label>
+
+                        <label class="flex items-center">
+                            <input type="checkbox"
+                                   checked
+                                   name="enable_ai"
+                                   class="mr-3">
+                            Enable AI Detection
+                        </label>
+
+                        <label class="flex items-center">
+                            <input type="checkbox"
+                                   checked
+                                   name="enable_plagiarism"
+                                   class="mr-3">
+                            Enable Plagiarism Detection
+                        </label>
+
+                    </div>
+
+                </div>
+
+                <!-- Submit -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <button
+                        type="submit"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg font-semibold transition">
+
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Publish Assignment
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "header_footer.html" %}
+
+{% block title %}Register - Academic Integrity System{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+        <div>
+            <div class="flex justify-center">
+                <div
+                    class="h-16 w-16 rounded-full bg-gradient-to-r from-green-600 to-green-800 flex items-center justify-center">
+                    <i class="fas fa-user-plus text-3xl text-white"></i>
+                </div>
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Create Account
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Join the Academic Integrity System
+            </p>
+        </div>
+
+        <!--  USE DIRECT ACTION URL -->
+        <form class="mt-8 space-y-6" method="POST" action="/auth/register">
+            {{ form.hidden_tag() }}
+            <div class="rounded-md shadow-sm space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input id="username" name="username" type="text" required
+                        class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        placeholder="Choose a username">
+                </div>
+
+                <div>
+                    <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                    <input id="first_name" name="first_name" type="text" required
+                        class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        placeholder="Enter your first name">
+                </div>
+
+                <div>
+                    <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                    <input id="last_name" name="last_name" type="text" required
+                        class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        placeholder="Enter your last name">
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <input id="email" name="email" type="email" required
+                        class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        placeholder="Enter your email">
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input id="password" name="password" type="password" required
+                        class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                        placeholder="Create a password">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">
+                        Confirm Password
+                    </label>
+
+                    <input type="password" name="confirm_password" id="confirm_password" required
+                        class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300"
+                        placeholder="Confirm your password">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">
+                        Register As
+                    </label>
+
+                    <select name="role" id="role" required
+                        class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300">
+
+                        <option value="">Select Role</option>
+                        <option value="student">Student</option>
+                        <option value="lecturer">Lecturer</option>
+
+                    </select>
+                </div>
+
+                
+                <div id="student-fields">
+
+                    <div>
+                        <label>Matric Number</label>
+                        <input type="text" name="matric_number" class="w-full border rounded-lg px-3 py-2">
+                    </div>
+
+                    <div>
+                        <label>Level</label>
+                        <input type="number" name="level" class="w-full border rounded-lg px-3 py-2">
+                    </div>
+
+                    <div>
+                        <label>Program</label>
+                        <input type="text" name="program" class="w-full border rounded-lg px-3 py-2">
+                    </div>
+
+                </div>
+
+                <div id="lecturer-fields" style="display:none;">
+
+                    <div>
+                        <label>Staff ID</label>
+                        <input type="text" name="staff_id" class="w-full border rounded-lg px-3 py-2">
+                    </div>
+
+                    <div>
+                        <label>Specialization</label>
+                        <input type="text" name="specialization" class="w-full border rounded-lg px-3 py-2">
+                    </div>
+
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <i class="fas fa-user-plus text-green-300 group-hover:text-green-200"></i>
+                    </span>
+                    Create Account
+                </button>
+            </div>
+        </form>
+
+        <p class="mt-8 text-center text-sm text-gray-600">
+            Already have an account?
+            <a href="/auth/login" class="font-medium text-green-600 hover:text-green-500">
+                Sign in here
+            </a>
+        </p>
+    </div>
+</div>
+
+<script>
+const role = document.getElementById("role");
+
+function toggleFields() {
+
+    const student = document.getElementById("student-fields");
+    const lecturer = document.getElementById("lecturer-fields");
+
+    if (role.value === "student") {
+
+        student.style.display = "block";
+        lecturer.style.display = "none";
+
+    } else if (role.value === "lecturer") {
+
+        student.style.display = "none";
+        lecturer.style.display = "block";
+
+    } else {
+
+        student.style.display = "none";
+        lecturer.style.display = "none";
+
+    }
+
+}
+
+role.addEventListener("change", toggleFields);
+
+toggleFields();
+</script>
+{% endblock %}

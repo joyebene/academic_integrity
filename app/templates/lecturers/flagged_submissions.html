@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}Flagged Submissions{% endblock %}
+
+{% block content %}
+
+<div class="space-y-8">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-red-600 to-red-800 rounded-2xl p-6 text-white">
+
+        <div class="flex justify-between items-center">
+
+            <div>
+                <h1 class="text-3xl font-bold">
+                    Flagged Submissions
+                </h1>
+
+                <p class="text-red-100 mt-2">
+                    Review submissions flagged by the AI integrity system.
+                </p>
+            </div>
+
+            <div class="bg-white/10 rounded-xl px-6 py-4 text-center">
+
+                <p class="text-3xl font-bold">
+                    {{ suspicious_submissions|length }}
+                </p>
+
+                <p>Total Flagged</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+        <table class="min-w-full">
+
+            <thead class="bg-gray-100">
+
+                <tr>
+
+                    <th class="px-6 py-4 text-left">Student</th>
+
+                    <th class="px-6 py-4 text-left">Assignment</th>
+
+                    <th class="px-6 py-4 text-left">Plagiarism</th>
+
+                    <th class="px-6 py-4 text-left">AI Score</th>
+
+                    <th class="px-6 py-4 text-left">Severity</th>
+
+                    <th class="px-6 py-4 text-left">Date</th>
+
+                    <th class="px-6 py-4 text-center">Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for suspicious in suspicious_submissions %}
+
+                {% set submission = suspicious.submission %}
+
+                <tr class="border-t hover:bg-gray-50">
+
+                    <td class="px-6 py-4">
+
+                        <div>
+
+                            <p class="font-semibold">
+                                {{ submission.student.user.full_name }}
+                            </p>
+
+                            <p class="text-sm text-gray-500">
+                                {{ submission.student.matric_number }}
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        {{ submission.assignment.title }}
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        <span class="font-semibold text-red-600">
+                            {{ submission.analysis.plagiarism_score }}%
+                        </span>
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        <span class="font-semibold text-purple-600">
+                            {{ submission.analysis.ai_generated_score }}%
+                        </span>
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        {% if suspicious.severity == "high" %}
+
+                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">
+                                High
+                            </span>
+
+                        {% elif suspicious.severity == "medium" %}
+
+                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                                Medium
+                            </span>
+
+                        {% else %}
+
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                                Low
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        {{ suspicious.created_at.strftime("%d %b %Y") }}
+
+                    </td>
+
+                    <td class="px-6 py-4 text-center">
+
+                        <div class="flex justify-center gap-4">
+
+                            <a href="{{ url_for('lecturers.view_submission', id=submission.id) }}"
+                               class="text-blue-600 hover:text-blue-800"
+                               title="Review">
+
+                                <i class="fas fa-eye"></i>
+
+                            </a>
+
+                            <a href="{{ url_for('lecturers.download_submission', id=submission.id) }}"
+                               class="text-green-600 hover:text-green-800"
+                               title="Download">
+
+                                <i class="fas fa-download"></i>
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="7" class="py-12 text-center text-gray-500">
+
+                        <i class="fas fa-shield-alt text-5xl mb-4 text-green-500"></i>
+
+                        <p class="text-lg font-semibold">
+                            No flagged submissions.
+                        </p>
+
+                        <p class="text-sm">
+                            Great! No suspicious submissions have been detected.
+                        </p>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

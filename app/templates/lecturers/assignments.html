@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}Assignments - Academic Integrity System{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-6 text-white mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold">
+                    Assignment Management
+                </h1>
+                <p class="text-green-100 mt-2">
+                    Create, manage and monitor assignments for your students.
+                </p>
+            </div>
+
+            <a href="{{ url_for('lecturers.create_assignment') }}"
+               class="bg-white text-green-700 hover:bg-gray-100 px-6 py-3 rounded-xl font-semibold transition">
+                <i class="fas fa-plus mr-2"></i>
+                Create Assignment
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <p class="text-gray-500 text-sm">Total Assignments</p>
+            <h2 class="text-3xl font-bold mt-2">
+                {{ stats.total_assignments }}
+            </h2>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <p class="text-gray-500 text-sm">Active</p>
+            <h2 class="text-3xl font-bold text-green-600 mt-2">
+                {{ stats.active }}
+            </h2>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <p class="text-gray-500 text-sm">Expired</p>
+            <h2 class="text-3xl font-bold text-red-600 mt-2">
+                {{ stats.expired }}
+            </h2>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <p class="text-gray-500 text-sm">Submissions</p>
+            <h2 class="text-3xl font-bold text-blue-600 mt-2">
+                {{ stats.total_submissions }}
+            </h2>
+        </div>
+
+    </div>
+
+    <!-- Assignments Table -->
+
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+
+        <div class="px-6 py-5 border-b flex justify-between items-center">
+
+            <h2 class="text-xl font-bold text-gray-800">
+                All Assignments
+            </h2>
+
+            <input
+                type="text"
+                placeholder="Search assignment..."
+                class="border rounded-lg px-4 py-2 w-72 focus:outline-none focus:ring-2 focus:ring-green-500">
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="min-w-full divide-y divide-gray-200">
+
+                <thead class="bg-gray-50">
+
+                    <tr>
+
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                            Assignment
+                        </th>
+
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                            Course
+                        </th>
+
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                            Due Date
+                        </th>
+
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                            Submissions
+                        </th>
+
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                            Status
+                        </th>
+
+                        <th class="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="divide-y divide-gray-200 bg-white">
+
+                    {% for assignment in assignments %}
+
+                    <tr class="hover:bg-gray-50">
+
+                        <td class="px-6 py-4">
+
+                            <div class="font-semibold text-gray-900">
+                                {{ assignment.title }}
+                            </div>
+
+                            <div class="text-sm text-gray-500">
+                                {{ assignment.description[:70] }}...
+                            </div>
+
+                        </td>
+
+                        <td class="px-6 py-4">
+                            {{ assignment.course.code }}
+                        </td>
+
+                        <td class="px-6 py-4">
+                            {{ assignment.due_date.strftime("%d %b %Y") }}
+                        </td>
+
+                        <td class="px-6 py-4">
+
+                            {{ assignment.submissions|length }}
+
+                        </td>
+
+                        <td class="px-6 py-4">
+
+                            {% if assignment.is_active %}
+
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                Active
+                            </span>
+
+                            {% else %}
+
+                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                Closed
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="px-6 py-4 text-right">
+
+                            <a href="{{ url_for('lecturers.view_assignment', id=assignment.id) }}"
+                               class="text-blue-600 hover:text-blue-800 mr-4">
+
+                                <i class="fas fa-eye"></i>
+
+                            </a>
+
+                            <a href="{{ url_for('lecturers.edit_assignment', id=assignment.id) }}"
+                               class="text-yellow-600 hover:text-yellow-800 mr-4">
+
+                                <i class="fas fa-edit"></i>
+
+                            </a>
+
+                            <a href="{{ url_for('lecturers.delete_assignment', id=assignment.id) }}"
+                               onclick="return confirm('Delete this assignment?')"
+                               class="text-red-600 hover:text-red-800">
+
+                                <i class="fas fa-trash"></i>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="6" class="text-center py-12">
+
+                            <i class="fas fa-folder-open text-5xl text-gray-300 mb-4"></i>
+
+                            <h3 class="text-xl font-semibold text-gray-700">
+                                No Assignments Yet
+                            </h3>
+
+                            <p class="text-gray-500 mt-2">
+                                Click the button above to create your first assignment.
+                            </p>
+
+                            <a href="{{ url_for('lecturers.create_assignment') }}"
+                               class="inline-block mt-6 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl">
+
+                                <i class="fas fa-plus mr-2"></i>
+
+                                Create Assignment
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

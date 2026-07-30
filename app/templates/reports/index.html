@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Reports
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="max-w-7xl mx-auto">
+
+
+    <div class="bg-gradient-to-r from-purple-600 to-purple-800 text-white p-6 rounded-xl mb-8">
+
+
+        <h1 class="text-3xl font-bold">
+
+            Reports
+
+        </h1>
+
+
+        <p class="mt-2">
+
+            AI detection and plagiarism analysis reports
+
+        </p>
+
+
+    </div>
+
+
+
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+
+        <table class="w-full">
+
+
+            <thead class="bg-gray-50">
+
+
+                <tr>
+
+                    <th class="p-4 text-left">
+                        Student
+                    </th>
+
+                    <th class="p-4">
+                        Assignment
+                    </th>
+
+
+                    <th class="p-4">
+                        AI Score
+                    </th>
+
+
+                    <th class="p-4">
+                        Plagiarism
+                    </th>
+
+
+                    <th class="p-4">
+                        Generated
+                    </th>
+
+
+                </tr>
+
+
+            </thead>
+
+
+
+            <tbody>
+
+
+                {% for report in reports %}
+
+
+                <tr class="border-t">
+
+
+                    <td class="p-4">
+
+                        {{ report.submission.student.user.full_name }}
+
+                    </td>
+
+
+                    <td class="p-4">
+
+                        {{ report.submission.assignment.title }}
+
+                    </td>
+
+
+                    <td class="p-4">
+
+                        {{ report.ai_score }}%
+
+                    </td>
+
+
+                    <td class="p-4">
+
+                        {{ report.plagiarism_score }}%
+
+                    </td>
+
+
+                    <td class="p-4">
+
+                        {{ report.created_at.strftime('%d %b %Y') }}
+
+                    </td>
+
+
+                </tr>
+
+
+                {% endfor %}
+
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

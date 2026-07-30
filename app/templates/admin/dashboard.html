@@ -1,0 +1,201 @@
+<!-- templates/admin/dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Academic Integrity System{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-purple-600 to-purple-800 rounded-2xl p-6 text-white mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+                <p class="text-purple-100 mt-2">System overview and management</p>
+            </div>
+            <div class="flex gap-4">
+                <div class="bg-white/10 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold">{{ stats.total_users }}</div>
+                    <div class="text-sm text-purple-200">Total Users</div>
+                </div>
+                <div class="bg-white/10 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold">{{ stats.total_submissions }}</div>
+                    <div class="text-sm text-purple-200">Total Submissions</div>
+                </div>
+                <div class="bg-white/10 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold">{{ stats.flagged_percent }}%</div>
+                    <div class="text-sm text-purple-200">Flagged Rate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm p-6 card-hover transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Students</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ system_stats.students }}</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fas fa-user-graduate text-blue-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-sm p-6 card-hover transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Lecturers</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ system_stats.lecturers }}</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+                    <i class="fas fa-chalkboard-teacher text-green-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-sm p-6 card-hover transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Courses</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ system_stats.courses }}</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <i class="fas fa-book text-yellow-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-sm p-6 card-hover transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Assignments</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ system_stats.assignments }}</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
+                    <i class="fas fa-tasks text-purple-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Management Sections -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- User Management -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-gray-800">👥 User Management</h2>
+                <a href="{{ url_for('admin.users') }}" class="text-sm text-blue-600 hover:text-blue-800">View All</a>
+            </div>
+            
+            <div class="space-y-4">
+                {% for user in recent_users[:5] %}
+                <div class="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold">
+                            {{ user.first_name[0] }}
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-800">{{ user.first_name }} {{ user.last_name }}</p>
+                            <p class="text-sm text-gray-500">{{ user.email }}</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 rounded-full text-xs font-medium
+                        {% if user.role == 'admin' %}bg-purple-100 text-purple-700
+                        {% elif user.role == 'lecturer' %}bg-green-100 text-green-700
+                        {% else %}bg-blue-100 text-blue-700{% endif %}">
+                        {{ user.role|title }}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- System Settings -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">⚙️ System Settings</h2>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">Plagiarism Threshold</p>
+                        <p class="text-sm text-gray-500">Flag submissions above this percentage</p>
+                    </div>
+                    <span class="font-bold text-blue-600">{{ settings.plagiarism_threshold }}%</span>
+                </div>
+                
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">AI Detection Threshold</p>
+                        <p class="text-sm text-gray-500">Flag AI-generated content above this percentage</p>
+                    </div>
+                    <span class="font-bold text-purple-600">{{ settings.ai_threshold }}%</span>
+                </div>
+                
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">Max File Size</p>
+                        <p class="text-sm text-gray-500">Maximum allowed file upload size</p>
+                    </div>
+                    <span class="font-bold text-gray-600">{{ settings.max_file_size }} MB</span>
+                </div>
+                
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-800">Allow Resubmission</p>
+                        <p class="text-sm text-gray-500">Allow students to resubmit assignments</p>
+                    </div>
+                    <span class="px-2 py-1 rounded-full text-xs font-medium
+                        {% if settings.allow_resubmission %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                        {{ 'Yes' if settings.allow_resubmission else 'No' }}
+                    </span>
+                </div>
+            </div>
+            
+            <a href="{{ url_for('admin.settings') }}" class="mt-4 block w-full text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+                <i class="fas fa-edit mr-2"></i>Manage Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- System Logs -->
+    <div class="mt-6 bg-white rounded-xl shadow-sm p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-gray-800">📋 Recent System Logs</h2>
+            <a href="{{ url_for('admin.logs') }}" class="text-sm text-blue-600 hover:text-blue-800">View All</a>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for log in system_logs[:10] %}
+                    <tr>
+                        <td class="px-4 py-2 text-xs text-gray-500">{{ log.created_at.strftime("%d %b %Y %H:%M") }}</td>
+                        <td class="px-4 py-2 text-sm text-gray-700">{{ log.user.full_name if log.user else "System" }}</td>
+                        <td class="px-4 py-2">
+                            <span class="px-2 py-1 rounded-full text-xs font-medium
+                                {% if log.action_type == 'create' %}bg-green-100 text-green-700
+                                {% elif log.action_type == 'delete' %}bg-red-100 text-red-700
+                                {% elif log.action_type == 'update' %}bg-blue-100 text-blue-700
+                                {% else %}bg-gray-100 text-gray-700{% endif %}">
+                                {{ log.action }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-2 text-sm text-gray-500">{{ log.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

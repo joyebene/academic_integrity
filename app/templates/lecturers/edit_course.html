@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Course{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto">
+
+    <!-- Header -->
+
+    <div class="flex justify-between items-center mb-8">
+
+        <div>
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                Edit Course
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Update course information.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('lecturers.courses') }}"
+           class="bg-gray-200 hover:bg-gray-300 px-5 py-2 rounded-lg transition">
+
+            Back
+
+        </a>
+
+    </div>
+
+    <!-- Form -->
+
+    <div class="bg-white rounded-xl shadow p-8">
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            <div class="mb-6">
+
+                <label class="block font-medium mb-2">
+                    Course Code
+                </label>
+
+                {{ form.code(class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-yellow-400") }}
+
+            </div>
+
+            <div class="mb-6">
+
+                <label class="block font-medium mb-2">
+                    Course Title
+                </label>
+
+                {{ form.title(class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-yellow-400") }}
+
+            </div>
+
+            <div class="mb-8">
+
+                <label class="block font-medium mb-2">
+                    Description
+                </label>
+
+                {{ form.description(class="w-full border rounded-lg p-3 h-40 focus:ring-2 focus:ring-yellow-400") }}
+
+            </div>
+
+            <div class="flex gap-4">
+
+                <button
+                    type="submit"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg transition">
+
+                    <i class="fas fa-save mr-2"></i>
+
+                    Update Course
+
+                </button>
+
+                <a href="{{ url_for('lecturers.courses') }}"
+                   class="bg-gray-200 hover:bg-gray-300 px-6 py-3 rounded-lg transition">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

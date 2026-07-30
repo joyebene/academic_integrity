@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - Academic Integrity System{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Welcome Banner -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-6 text-white mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold">Welcome back, {{ current_user.first_name }}! </h1>
+                <p class="text-blue-100 mt-2">Track your assignments and maintain academic integrity</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4 text-center">
+                <div class="text-2xl font-bold">{{ stats.total_submissions }}</div>
+                <div class="text-sm text-blue-200">Total Submissions</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm p-6 card-hover transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Pending Assignments</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ stats.pending_assignments }}</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 card-hover transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Completed Submissions</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ stats.completed_submissions }}</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 card-hover transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Average Integrity Score</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ stats.avg_integrity_score }}%</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignments List -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Pending Assignments -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">📋 Pending Assignments</h2>
+                    <a href="{{ url_for('students.assignments') }}"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        View Assignments
+                    </a>
+                </div>
+
+                {% if pending_assignments %}
+                <div class="space-y-4">
+                    {% for assignment in pending_assignments %}
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-semibold text-gray-800">{{ assignment.title }}</h3>
+                                <div class="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                                    <span><i class="fas fa-book mr-1"></i>{{ assignment.course_code }}</span>
+                                    <span><i class="fas fa-calendar mr-1"></i>Due: {{ assignment.due_date }}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 rounded-full text-xs font-medium 
+                                        {% if assignment.status == 'urgent' %}bg-red-100 text-red-700
+                                        {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                                    {{ assignment.status|title }}
+                                </span>
+                                <a href="{{ url_for('students.submit_assignment', assignment_id=assignment.id) }}"
+                                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition">
+                                    Submit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i class="fas fa-check-circle text-4xl text-green-500 mb-3"></i>
+                    <p class="text-gray-500">All caught up! No pending assignments.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Activity / Notifications -->
+        <div>
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Activity</h2>
+
+                {% if activities %}
+                <div class="space-y-4">
+                    {% for activity in activities[:5] %}
+                    <div class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-0">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center
+                                {% if activity.type == 'success' %}bg-green-100 text-green-600
+                                {% elif activity.type == 'warning' %}bg-yellow-100 text-yellow-600
+                                {% else %}bg-blue-100 text-blue-600{% endif %}">
+                            <i class="fas fa-{{ activity.icon }} text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-800">{{ activity.message }}</p>
+                            <p class="text-xs text-gray-400 mt-1">{{ activity.time_ago }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <p class="text-gray-500">No recent activities</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

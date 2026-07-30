@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+{% block title %}Submission Details{% endblock %}
+
+{% block content %}
+
+<div class="space-y-8">
+
+    <!-- Header -->
+
+    <div class="bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-6 text-white">
+
+        <div class="flex justify-between items-center">
+
+            <div>
+
+                <h1 class="text-3xl font-bold">
+
+                    Submission Details
+
+                </h1>
+
+                <p class="text-green-100 mt-2">
+
+                    Review student assignment and AI analysis
+
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('lecturers.submissions') }}"
+                class="bg-white text-green-700 px-5 py-2 rounded-lg font-semibold">
+
+                ← Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Student Information -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="text-xl font-bold mb-5">
+
+            Student Information
+
+        </h2>
+
+        <div class="grid grid-cols-2 gap-6">
+
+            <div>
+
+                <p class="text-gray-500">Student Name</p>
+
+                <h3 class="font-semibold text-lg">
+
+                    {{ submission.student.user.full_name }}
+
+                </h3>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">Matric Number</p>
+
+                <h3 class="font-semibold">
+
+                    {{ submission.student.matric_number }}
+
+                </h3>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">Assignment</p>
+
+                <h3 class="font-semibold">
+
+                    {{ submission.assignment.title }}
+
+                </h3>
+
+            </div>
+
+            <div>
+
+                <p class="text-gray-500">Submitted On</p>
+
+                <h3 class="font-semibold">
+
+                    {{ submission.submitted_at.strftime("%d %B %Y %I:%M %p") }}
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Download -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="text-xl font-bold mb-4">
+
+            Uploaded File
+
+        </h2>
+
+        <div class="flex justify-between items-center">
+
+            <div>
+
+                <h3 class="font-semibold">
+
+                    {{ submission.original_filename }}
+
+                </h3>
+
+                <p class="text-gray-500">
+
+                    Student uploaded assignment
+
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('lecturers.download_submission',
+                id=submission.id) }}" class="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700">
+
+                <i class="fas fa-download mr-2"></i>
+
+                Download
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI Analysis -->
+
+    <div class="grid grid-cols-2 gap-6">
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <h2 class="font-bold text-lg mb-4">
+
+                Plagiarism Score
+
+            </h2>
+
+            <div class="w-full bg-gray-200 rounded-full h-4">
+
+                <div class="bg-red-500 h-4 rounded-full"
+                    style="width: {{ analysis.plagiarism_score if analysis else 0 }}%">
+                </div>
+
+            </div>
+
+            <p class="text-3xl font-bold mt-4 text-red-600">
+
+                {{ analysis.plagiarism_score if analysis else 0 }}%
+
+            </p>
+
+        </div>
+
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <h2 class="font-bold text-lg mb-4">
+
+                AI Detection Score
+
+            </h2>
+
+            <div class="w-full bg-gray-200 rounded-full h-4">
+
+                <div class="bg-purple-600 h-4 rounded-full"
+                    style="width: {{ analysis.ai_generated_score if analysis else 0 }}%">
+                </div>
+
+            </div>
+
+            <p class="text-3xl font-bold mt-4 text-purple-600">
+
+                {{ analysis.ai_generated_score if analysis else 0 }}%
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Risk Status -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="text-xl font-bold mb-4">
+
+            Risk Assessment
+
+        </h2>
+
+        {% if suspicious %}
+
+        <div class="bg-red-100 border border-red-300 rounded-lg p-5">
+
+            <h3 class="font-bold text-red-700">
+
+                High Risk Submission
+
+            </h3>
+
+            <p class="mt-2">
+
+                {{ suspicious.reason }}
+
+            </p>
+
+            <p class="mt-3">
+
+                Severity:
+
+                <span class="font-bold uppercase">
+
+                    {{ suspicious.severity }}
+
+                </span>
+
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <div class="bg-green-100 border border-green-300 rounded-lg p-5">
+
+            <h3 class="font-bold text-green-700">
+
+                Low Risk Submission
+
+            </h3>
+
+            <p>
+
+                No suspicious activity detected.
+
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Student Comment -->
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="font-bold text-xl mb-4">
+
+            Student Comment
+
+        </h2>
+
+        <p>
+
+            {{ submission.comments or "No comments provided." }}
+
+        </p>
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="font-bold text-xl mb-6">
+            Lecturer Actions
+        </h2>
+
+        <form method="POST">
+             {{ form.hidden_tag() }}
+            <textarea name="feedback" rows="4" class="w-full border rounded-lg p-3 mb-5"
+                placeholder="Optional feedback or reason for flagging..."></textarea>
+
+            <div class="flex flex-wrap gap-4">
+
+                <button type="submit" name="action" value="approve"
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg">
+
+                    <i class="fas fa-check mr-2"></i>
+                    Approve Submission
+
+                </button>
+
+                <button type="submit" name="action" value="flag"
+                    class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg">
+
+                    <i class="fas fa-flag mr-2"></i>
+                    Flag Submission
+
+                </button>
+
+                <button type="submit" name="action" value="report"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    Generate Report
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}All Courses{% endblock %}
+
+{% block content %}
+
+<div class="bg-white rounded-xl shadow p-6">
+
+    <h1 class="text-2xl font-bold mb-6">
+        All Courses
+    </h1>
+
+
+    <div class="overflow-x-auto">
+
+        <table class="w-full">
+
+            <thead class="bg-gray-100">
+
+                <tr>
+                    <th class="p-3 text-left">Course Code</th>
+                    <th class="p-3 text-left">Title</th>
+                    <th class="p-3 text-left">Lecturer</th>
+                    <th class="p-3 text-left">Created</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for course in courses %}
+
+                <tr class="border-b">
+
+                    <td class="p-3">
+                        {{ course.code }}
+                    </td>
+
+                    <td class="p-3">
+                        {{ course.title }}
+                    </td>
+
+
+                    <td class="p-3">
+
+                    {% if course.lecturer %}
+                        {{ course.lecturer.user.full_name }}
+                    {% else %}
+                        No lecturer
+                    {% endif %}
+
+                    </td>
+
+
+                    <td class="p-3">
+                        {{ course.created_at }}
+                    </td>
+
+                </tr>
+
+
+            {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

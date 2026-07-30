@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+
+{% block title %}All Submissions{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="bg-white rounded-xl shadow p-6">
+
+
+<h1 class="text-2xl font-bold mb-6">
+All Student Submissions
+</h1>
+
+
+
+<table class="w-full">
+
+
+<thead class="bg-gray-100">
+
+
+<tr>
+
+<th class="p-3 text-left">
+Student
+</th>
+
+
+<th class="p-3 text-left">
+Assignment
+</th>
+
+
+<th class="p-3 text-left">
+Status
+</th>
+
+
+<th class="p-3 text-left">
+Action
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for submission in submissions %}
+
+
+<tr class="border-b">
+
+
+<td class="p-3">
+
+{{ submission.student.user.full_name }}
+
+</td>
+
+
+
+<td class="p-3">
+
+{{ submission.assignment.title }}
+
+</td>
+
+
+
+<td class="p-3">
+
+
+{% if submission.status == "approved" %}
+
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded">
+Approved
+</span>
+
+
+{% elif submission.status == "completed" %}
+
+<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded">
+Completed
+</span>
+
+
+{% else %}
+
+<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded">
+{{ submission.status }}
+</span>
+
+
+{% endif %}
+
+
+</td>
+
+
+
+
+<td class="p-3">
+
+<a href="{{ url_for('admin.view_submission', id=submission.id) }}"
+class="text-blue-600">
+
+View
+
+</a>
+
+
+</td>
+
+
+
+</tr>
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+</div>
+
+
+{% endblock %}

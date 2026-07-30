@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Settings
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="max-w-4xl mx-auto">
+
+
+<div class="bg-white rounded-xl shadow p-8">
+
+
+<h1 class="text-3xl font-bold mb-6">
+Account Settings
+</h1>
+
+
+
+<div class="space-y-5">
+
+
+<div>
+
+<label class="text-gray-500">
+Full Name
+</label>
+
+
+<p class="font-semibold">
+{{ user.full_name }}
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<label class="text-gray-500">
+Email
+</label>
+
+
+<p class="font-semibold">
+{{ user.email }}
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<label class="text-gray-500">
+Role
+</label>
+
+
+<p class="font-semibold capitalize">
+{{ user.role }}
+</p>
+
+
+</div>
+
+
+
+<div>
+
+<label class="text-gray-500">
+Account Created
+</label>
+
+
+<p>
+{{ user.created_at.strftime('%d %B %Y') }}
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+<hr class="my-8">
+
+
+
+<h2 class="text-xl font-bold mb-4">
+Security
+</h2>
+
+
+<a href="#"
+class="bg-blue-600 text-white px-5 py-3 rounded-lg">
+
+Change Password
+
+</a>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+{% endblock %}
